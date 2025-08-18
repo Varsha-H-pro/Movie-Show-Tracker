@@ -10,18 +10,46 @@ function MovieGrid() {
   {
     id: 2,
     title: 'Interstellar',
-    poster: 'https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg',
+    poster: 'https://www.themoviedb.org/t/p/original/nCbkOyOMTEwlEV0LtCOvCnwEONA.jpg',
+  },
+  {
+    id: 3,
+    title: 'The Dark Knight',
+    poster: 'https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg',
+  },
+  {
+    id: 4,
+    title: 'Tenet',
+    poster: 'https://image.tmdb.org/t/p/w500/k68nPLbIST6NP96JmTxmZijEvCA.jpg',
+  },
+  {
+    id: 5,
+    title: 'Dunkirk',
+    poster: 'https://image.tmdb.org/t/p/w500/ebSnODDg9lbsMIaWg2uAbjn7TO5.jpg',
+  },
+  {
+    id: 6,
+    title: 'Oppenheimer',
+    poster: 'https://image.tmdb.org/t/p/w500/pFlaoHTZeyNkG83vxsAJiGzfSsa.jpg',
   },
 ];
 
 
 
   return (
-    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-      {dummyMovies.map(movie => (
-        <MovieCard key={movie.id} movie={movie} />
-      ))}
-    </div>
+    <div
+  style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
+    gap: '1.5rem',
+    padding: '1rem',
+    justifyContent: 'center',
+  }}
+>
+  {dummyMovies.map(movie => (
+    <MovieCard key={movie.id} movie={movie} />
+  ))}
+</div>
   );
 }
 

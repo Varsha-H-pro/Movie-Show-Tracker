@@ -1,13 +1,20 @@
 import SearchBar from '../components/SearchBar';
 import MovieGrid from '../components/MovieGrid';
-import '../App.css'; // Make sure this is imported if not already
+import '../App.css';
 
 function Home() {
   return (
     <div className="home-wrapper">
-      <h1>🎬 Movie Tracker</h1>
-      <SearchBar />
-      <MovieGrid />
+      <header className="hero-section">
+        <h1>🎬 Movie Show Tracker</h1>
+        <p>Track your favorite movies and TV shows. Search, explore, and build your watchlist!</p>
+        <SearchBar />
+      </header>
+
+      <section className="grid-section">
+        <h2>Popular Picks</h2>
+        <MovieGrid />
+      </section>
     </div>
   );
 }
