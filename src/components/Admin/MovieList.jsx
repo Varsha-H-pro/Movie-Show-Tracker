@@ -1,5 +1,5 @@
 import React from 'react';
-import { supabase } from '../../config/supabase';
+import { tmdbService } from '../../services/tmdbService';
 
 const MovieList = ({ movies, loading, onMovieDeleted }) => {
   const handleDelete = async (movieId) => {
@@ -8,17 +8,12 @@ const MovieList = ({ movies, loading, onMovieDeleted }) => {
     }
 
     try {
-      const { error } = await supabase
-        .from('movies')
-        .delete()
-        .eq('id', movieId);
-
-      if (error) throw error;
+      await tmdbService.deleteCustomMovie(movieId);
       
       onMovieDeleted(movieId);
     } catch (error) {
       console.error('Error deleting movie:', error);
-      alert('Error deleting movie');
+      alert(error.message || 'Error deleting movie');
     }
   };
 

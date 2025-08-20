@@ -1,17 +1,18 @@
 import React from 'react';
+import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navigation/Navbar';
 import AdminPanel from '../components/Admin/AdminPanel';
 import EnhancedSearchBar from '../components/Search/EnhancedSearchBar';
-import EnhancedMovieGrid from '../components/Movies/EnhancedMovieGrid';
+import TMDBMovieGrid from '../components/Movies/TMDBMovieGrid';
 import './Dashboard.css';
 
 const Dashboard = () => {
   const { user } = useAuth();
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleSearch = (searchTerm) => {
-    // TODO: Implement search functionality
-    console.log('Searching for:', searchTerm);
+    setSearchQuery(searchTerm);
   };
 
   if (user?.role === 'admin') {
@@ -38,10 +39,10 @@ const Dashboard = () => {
 
         <section className="movies-section">
           <div className="section-header">
-            <h2>Latest Movies</h2>
-            <p>Explore our collection of movies</p>
+            <h2>Discover Movies</h2>
+            <p>Explore popular movies and add them to your collection</p>
           </div>
-          <EnhancedMovieGrid />
+          <TMDBMovieGrid searchQuery={searchQuery} />
         </section>
       </div>
     </div>

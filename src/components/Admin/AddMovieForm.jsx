@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { supabase } from '../../config/supabase';
+import { tmdbService } from '../../services/tmdbService';
 
 const AddMovieForm = ({ onMovieAdded }) => {
   const [formData, setFormData] = useState({
@@ -31,18 +31,14 @@ const AddMovieForm = ({ onMovieAdded }) => {
     setSuccess('');
 
     try {
-      const { data, error } = await supabase
-        .from('movies')
-        .insert([{
-          ...formData,
-          release_year: parseInt(formData.release_year),
-          rating: parseFloat(formData.rating),
-          created_at: new Date().toISOString()
-        }])
-        .select()
-        .single();
-
-      if (error) throw error;
+      const movieData = {
+        ...formData,
+        release_year: parseInt(formData.release_year),
+        rating: parseFloat(formData.rating)
+      };
+      
+      const response = await tmdbService.addCustomMovie(movieData);
+      const data = response.movie;
 
       setSuccess('Movie added successfully!');
       setFormData({
@@ -61,7 +57,7 @@ const AddMovieForm = ({ onMovieAdded }) => {
         onMovieAdded(data);
       }
     } catch (error) {
-      setError(error.message);
+      setError(error.message || 'Failed to add movie');
     } finally {
       setLoading(false);
     }

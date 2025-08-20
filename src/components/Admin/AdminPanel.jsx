@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../../config/supabase';
+import { tmdbService } from '../../services/tmdbService';
 import AddMovieForm from './AddMovieForm';
 import MovieList from './MovieList';
 import './AdminPanel.css';
@@ -15,12 +15,7 @@ const AdminPanel = () => {
 
   const fetchMovies = async () => {
     try {
-      const { data, error } = await supabase
-        .from('movies')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
+      const data = await tmdbService.getCustomMovies();
       setMovies(data || []);
     } catch (error) {
       console.error('Error fetching movies:', error);
