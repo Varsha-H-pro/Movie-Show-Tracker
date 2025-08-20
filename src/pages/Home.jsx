@@ -1,4 +1,3 @@
-import SearchBar from '../components/SearchBar';
 import MovieGrid from '../components/MovieGrid';
 import '../App.css';
 
@@ -8,7 +7,7 @@ function Home() {
       <header className="hero-section">
         <h1>🎬 Movie Show Tracker</h1>
         <p>Track your favorite movies and TV shows. Search, explore, and build your watchlist!</p>
-        <SearchBar />
+        {/* Removed <SearchBar /> */}
       </header>
 
       <section className="grid-section">

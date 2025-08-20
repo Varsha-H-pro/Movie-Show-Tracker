@@ -1,9 +1,11 @@
-function SearchBar() {
+function SearchBar({ searchQuery, setSearchQuery }) {
   return (
-    <div style={{ marginBottom: '1.5rem' }}>
+    <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
       <input
         type="text"
         placeholder="Search for movies..."
+        value={searchQuery}
+        onChange={e => setSearchQuery(e.target.value)}
         style={{
           padding: '0.5rem',
           width: '250px',
@@ -12,7 +14,19 @@ function SearchBar() {
           border: '1px solid #ccc',
         }}
       />
-      <button style={{ padding: '0.5rem 1rem' }}>Search</button>
+      <button
+        onClick={() => {}}
+        style={{
+          padding: '0.5rem 1rem',
+          borderRadius: '4px',
+          backgroundColor: '#007bff',
+          color: '#fff',
+          border: 'none',
+          cursor: 'pointer',
+        }}
+      >
+        Search
+      </button>
     </div>
   );
 }
