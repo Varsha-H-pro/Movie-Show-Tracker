@@ -76,32 +76,9 @@ The application uses the following database tables:
 - npm or yarn
 - Supabase account
 
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd movie-tracker
    ```
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Set up Supabase**
-   - Create a new Supabase project
-   - Run the SQL queries from `database_schema.sql` in your Supabase SQL editor
-   - Get your Supabase URL and anon key
-
-4. **Environment Variables**
-   Create a `.env` file in the root directory:
-   ```env
-   REACT_APP_SUPABASE_URL=your_supabase_url
-   REACT_APP_SUPABASE_ANON_KEY=your_supabase_anon_key
-   ```
-
-5. **Start the development server**
+1. **Start the development server**
    ```bash
    npm start
    ```
@@ -152,13 +129,6 @@ Builds the app for production to the `build` folder.
 
 Launches the test runner in interactive watch mode.
 
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
 ## License
 
