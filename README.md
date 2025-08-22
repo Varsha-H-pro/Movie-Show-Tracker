@@ -68,15 +68,40 @@ The application uses the following database tables:
 - movie_id (UUID, Foreign Key)
 - created_at (TIMESTAMP)
 ```
+---
+## 📸 Screenshots
 
+###  Login View
+<p align="center">
+<img width="700" height="714" alt="Screenshot 2025-08-21 at 5 16 53 PM" src="https://github.com/user-attachments/assets/662e0655-d585-4c6e-b81c-99c17f90aad6" />
+</p>
+
+###  Dashboard (Movie List)
+<p align="center">
+<img width="700" height="714" alt="Screenshot 2025-08-21 at 5 18 28 PM" src="https://github.com/user-attachments/assets/e5c0d69a-14a7-4d65-8ef8-9dbf4ad4b44d" />
+</p>
+
+###  MovieCard
+<p align="center">
+<img width="700" height="714" alt="Screenshot 2025-08-21 at 5 20 09 PM" src="https://github.com/user-attachments/assets/4a0a383d-214a-4b0d-8ebf-71583ffbe261" />
+</p>
+
+###  Favorites and Watchlist
+<p align="center">
+<img width="700" height="714" alt="Screenshot 2025-08-21 at 5 22 20 PM" src="https://github.com/user-attachments/assets/70353fc8-4235-4f48-be70-1616f6d629e4" />
+</p>
+
+###  Admin Panel
+<p align="center">
+<img width="700" height="714" alt="Screenshot 2025-08-21 at 5 24 45 PM" src="https://github.com/user-attachments/assets/b340dea7-2411-49ea-89a4-34c2a39a3fff" />
+</p>
+
+---
 ## Setup Instructions
 
 ### Prerequisites
 - Node.js (v14 or higher)
 - npm or yarn
-- Supabase account
-
-   ```
 
 1. **Start the development server**
    ```bash
@@ -109,86 +134,11 @@ The application uses the following database tables:
 
 The app is designed to work with movie databases. You can integrate with:
 - The Movie Database (TMDb) API
-- Open Movie Database (OMDb) API
 - Custom movie data sources
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.
-
-### `npm test`
-
-Launches the test runner in interactive watch mode.
 
 
-## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Support
 
-For support, email support@movietracker.com or create an issue in the repository.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
