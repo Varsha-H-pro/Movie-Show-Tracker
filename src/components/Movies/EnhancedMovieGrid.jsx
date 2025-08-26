@@ -68,12 +68,31 @@ const EnhancedMovieGrid = ({ searchTerm = '' }) => {
       const res = await fetch(endpoint);
       if (!res.ok) throw new Error('Failed to fetch TMDB');
       const json = await res.json();
+      // Fetch genre list to map ids
+      let genreIdToName = new Map();
+      try {
+        const genreRes = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=en-US`);
+        if (genreRes.ok) {
+          const { genres } = await genreRes.json();
+          if (Array.isArray(genres)) {
+            for (const g of genres) {
+              if (g && typeof g.id === 'number' && g.name) {
+                genreIdToName.set(g.id, g.name);
+              }
+            }
+          }
+        }
+      } catch (_) {
+        // ignore
+      }
       const mapped = (json.results || []).map((m) => ({
         id: `tmdb_${m.id}`,
         title: m.title,
         description: m.overview,
         release_year: m.release_date ? m.release_date.split('-')[0] : '',
-        genre: '',
+        genre: Array.isArray(m.genre_ids) && m.genre_ids.length
+          ? m.genre_ids.map((gid) => genreIdToName.get(gid)).filter(Boolean).join(', ')
+          : '',
         director: '',
         cast: '',
         rating: typeof m.vote_average === 'number' ? Number(m.vote_average.toFixed(1)) : null,

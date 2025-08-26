@@ -5,6 +5,8 @@ import { ensureDatabaseInitialized } from './setup.js';
 import authRoutes from './routes/auth.js';
 import moviesRoutes from './routes/movies.js';
 import listsRoutes from './routes/lists.js';
+import usersRoutes from './routes/users.js';
+import reviewsRoutes from './routes/reviews.js';
 
 dotenv.config();
 
@@ -20,6 +22,8 @@ app.get('/health', (req, res) => {
 app.use('/auth', authRoutes);
 app.use('/movies', moviesRoutes);
 app.use('/', listsRoutes);
+app.use('/users', usersRoutes);
+app.use('/reviews', reviewsRoutes);
 
 const PORT = process.env.PORT || 4000;
 

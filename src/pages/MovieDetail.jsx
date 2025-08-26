@@ -11,6 +11,27 @@ function MovieDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const isTMDB = String(id || '').startsWith('tmdb_');
+  const [reviews, setReviews] = useState([]);
+  const [avgRating, setAvgRating] = useState(null);
+  const [reviewForm, setReviewForm] = useState({ rating: '', comment: '' });
+
+  const extractYouTubeId = (urlOrId) => {
+    if (!urlOrId) return '';
+    // If input looks like a bare key (TMDB video key)
+    if (/^[a-zA-Z0-9_-]{6,}$/.test(urlOrId) && !/http/i.test(urlOrId)) return urlOrId;
+    try {
+      const url = new URL(urlOrId);
+      if (url.hostname.includes('youtu.be')) {
+        return url.pathname.replace('/', '');
+      }
+      if (url.hostname.includes('youtube.com')) {
+        return url.searchParams.get('v') || '';
+      }
+    } catch (_) {
+      // not a URL, return empty
+    }
+    return '';
+  };
 
   useEffect(() => {
     const load = async () => {
@@ -31,6 +52,25 @@ function MovieDetail() {
         const res = await fetch(`https://api.themoviedb.org/3/movie/${tmdbId}?api_key=${apiKey}&language=en-US`);
         if (!res.ok) throw new Error('Failed to fetch movie from TMDB');
         const m = await res.json();
+
+        // Fetch trailer (videos)
+        let trailerUrl = '';
+        try {
+          const vids = await fetch(`https://api.themoviedb.org/3/movie/${tmdbId}/videos?api_key=${apiKey}&language=en-US`);
+          if (vids.ok) {
+            const vjson = await vids.json();
+            const videos = Array.isArray(vjson.results) ? vjson.results : [];
+            const preferred = videos.find(v => v.site === 'YouTube' && v.type === 'Trailer' && v.official) ||
+                              videos.find(v => v.site === 'YouTube' && v.type === 'Trailer') ||
+                              videos.find(v => v.site === 'YouTube');
+            if (preferred?.key) {
+              trailerUrl = `https://www.youtube.com/watch?v=${preferred.key}`;
+            }
+          }
+        } catch (_) {
+          // ignore trailer errors silently
+        }
+
         setMovie({
           id: `tmdb_${m.id}`,
           title: m.title,
@@ -41,7 +81,7 @@ function MovieDetail() {
           cast: '',
           rating: typeof m.vote_average === 'number' ? Number(m.vote_average.toFixed(1)) : null,
           poster_url: m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : '',
-          trailer_url: '',
+          trailer_url: trailerUrl,
         });
       } catch (e) {
         setError(e.message || 'Failed to load movie');
@@ -50,6 +90,18 @@ function MovieDetail() {
       }
     };
     load();
+  }, [id]);
+
+  useEffect(() => {
+    const loadReviews = async () => {
+      try {
+        if (!id || String(id).startsWith('tmdb_')) return;
+        const { data } = await api.get(`/reviews/movie/${id}`);
+        setReviews(data.reviews || []);
+        setAvgRating(data.aggregates?.avgRating ?? null);
+      } catch (_) {}
+    };
+    loadReviews();
   }, [id]);
 
   if (loading) return <div style={{ padding: '2rem' }}>Loading...</div>;
@@ -74,8 +126,33 @@ function MovieDetail() {
           {movie.rating && (
             <div style={{ margin: '8px 0' }}>⭐ {movie.rating}/10</div>
           )}
+          {avgRating && (
+            <div style={{ margin: '8px 0' }}>User Rating: ⭐ {avgRating}/10</div>
+          )}
           {movie.description && (
             <p style={{ lineHeight: 1.6 }}>{movie.description}</p>
+          )}
+
+          {movie.trailer_url && (
+            <div style={{ marginTop: 16 }}>
+              <h3 style={{ margin: '12px 0' }}>Trailer</h3>
+              {extractYouTubeId(movie.trailer_url) ? (
+                <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: 8 }}>
+                  <iframe
+                    title="Trailer"
+                    src={`https://www.youtube.com/embed/${extractYouTubeId(movie.trailer_url)}`}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                  />
+                </div>
+              ) : (
+                <a href={movie.trailer_url} target="_blank" rel="noreferrer" style={{ color: '#667eea' }}>
+                  Watch Trailer
+                </a>
+              )}
+            </div>
           )}
 
           {user && (
@@ -150,6 +227,68 @@ function MovieDetail() {
                 >
                   💾 Save to My Library
                 </button>
+              )}
+            </div>
+          )}
+
+          {/* Reviews Section (DB movies only) */}
+          {!isTMDB && (
+            <div style={{ marginTop: 24 }}>
+              <h3 style={{ marginBottom: 8 }}>Reviews</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
+                {reviews.length === 0 && <div style={{ color: '#666' }}>No reviews yet.</div>}
+                {reviews.map((r) => (
+                  <div key={r.id} style={{ background: '#f7f7fb', padding: 12, borderRadius: 8 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                      <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#ddd', overflow: 'hidden' }}>
+                        {r.avatarUrl ? <img src={r.avatarUrl} alt={r.fullName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : null}
+                      </div>
+                      <strong>{r.fullName}</strong>
+                      <span style={{ color: '#999' }}>⭐ {r.rating}/10</span>
+                    </div>
+                    {r.comment && <div style={{ color: '#333' }}>{r.comment}</div>}
+                  </div>
+                ))}
+              </div>
+              {user && (
+                <form
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    if (!reviewForm.rating) return;
+                    try {
+                      await api.post(`/reviews/movie/${id}`, {
+                        rating: Number(reviewForm.rating),
+                        comment: reviewForm.comment || '',
+                      });
+                      const { data } = await api.get(`/reviews/movie/${id}`);
+                      setReviews(data.reviews || []);
+                      setAvgRating(data.aggregates?.avgRating ?? null);
+                      setReviewForm({ rating: '', comment: '' });
+                    } catch (_) {}
+                  }}
+                  style={{ display: 'grid', gap: 8 }}
+                >
+                  <label>
+                    Your Rating (1-10)
+                    <input
+                      type="number"
+                      min="1"
+                      max="10"
+                      value={reviewForm.rating}
+                      onChange={(e) => setReviewForm((f) => ({ ...f, rating: e.target.value }))}
+                      style={{ marginLeft: 8, width: 80 }}
+                      required
+                    />
+                  </label>
+                  <textarea
+                    placeholder="Write a short review (optional)"
+                    value={reviewForm.comment}
+                    onChange={(e) => setReviewForm((f) => ({ ...f, comment: e.target.value }))}
+                    rows={3}
+                    style={{ padding: 8, borderRadius: 6 }}
+                  />
+                  <button type="submit" style={{ alignSelf: 'start' }}>Submit Review</button>
+                </form>
               )}
             </div>
           )}

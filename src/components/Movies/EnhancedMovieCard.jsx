@@ -114,6 +114,19 @@ const EnhancedMovieCard = ({ movie, onSaved, initialFavorite = false, initialWat
       
       <div className="movie-content">
         <h3 className="movie-title" onClick={() => navigate(`/movie/${movie.id}`)} style={{ cursor: 'pointer' }}>{movie.title}</h3>
+        {movie.trailer_url && (
+          <div style={{ margin: '6px 0' }}>
+            <a
+              href={movie.trailer_url}
+              target="_blank"
+              rel="noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              style={{ color: '#667eea', fontSize: '0.9rem' }}
+            >
+              ▶ Trailer
+            </a>
+          </div>
+        )}
         <p className="movie-year">{movie.release_year}</p>
         {movie.genre && <p className="movie-genre">{movie.genre}</p>}
         
